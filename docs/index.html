@@ -250,75 +250,7 @@
       opacity: 0.5;
     }
 
-    /* CTA */
-    .cta-block {
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .cta-text {
-      font-size: 14px;
-      color: var(--muted);
-    }
-
-    .notify-form {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .notify-input {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px 18px;
-      font-size: 14px;
-      color: var(--text);
-      font-family: inherit;
-      width: 260px;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .notify-input:focus {
-      border-color: rgba(108,99,255,0.5);
-    }
-
-    .notify-input::placeholder { color: var(--muted); }
-
-    .notify-btn {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 12px 22px;
-      font-size: 14px;
-      font-weight: 600;
-      font-family: inherit;
-      cursor: pointer;
-      transition: all 0.2s;
-      white-space: nowrap;
-      box-shadow: 0 4px 20px rgba(108,99,255,0.4);
-    }
-
-    .notify-btn:hover {
-      background: #7c73ff;
-      transform: translateY(-1px);
-      box-shadow: 0 6px 24px rgba(108,99,255,0.5);
-    }
-
-    .notify-btn:active { transform: translateY(0); }
-
-    .success-msg {
-      display: none;
-      color: var(--accent2);
-      font-size: 14px;
-      font-weight: 500;
-    }
+    /* CTA removed */
 
     /* Footer */
     footer {
@@ -334,8 +266,6 @@
     @media (max-width: 520px) {
       .countdown-container { padding: 32px 20px; }
       .countdown-grid { gap: 10px; }
-      .notify-input { width: 100%; }
-      .notify-form { flex-direction: column; align-items: stretch; width: 100%; max-width: 320px; }
     }
   </style>
 </head>
@@ -392,15 +322,7 @@
       </div>
     </div>
 
-    <!-- Notify CTA -->
-    <div class="cta-block">
-      <p class="cta-text">Want a heads-up when we go live?</p>
-      <form class="notify-form" onsubmit="handleSubmit(event)">
-        <input class="notify-input" type="email" placeholder="your@email.com" required />
-        <button class="notify-btn" type="submit">Notify Me</button>
-      </form>
-      <p class="success-msg" id="success">You're on the list. See you July 1st.</p>
-    </div>
+
   </div>
 
   <footer>
@@ -453,12 +375,7 @@
     updateCountdown();
     setInterval(updateCountdown, 1000);
 
-    function handleSubmit(e) {
-      e.preventDefault();
-      document.querySelector('.notify-form').style.display = 'none';
-      document.querySelector('.cta-text').style.display = 'none';
-      document.getElementById('success').style.display = 'block';
-    }
+
   </script>
 </body>
 </html>
