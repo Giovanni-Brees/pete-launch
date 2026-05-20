@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pete's MVP Launch - Coming July 1</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #13131a;
+      --border: rgba(255,255,255,0.08);
+      --accent: #6c63ff;
+      --accent2: #a78bfa;
+      --text: #f0f0f5;
+      --muted: #8884a0;
+      --glow: rgba(108,99,255,0.35);
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Background grid + gradient */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(108,99,255,0.18) 0%, transparent 65%),
+        linear-gradient(to bottom, #0a0a0f 0%, #0d0d14 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .grid-bg {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      gap: 48px;
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(108,99,255,0.12);
+      border: 1px solid rgba(108,99,255,0.3);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent2);
+      letter-spacing: 0.03em;
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    /* Headline */
+    .headline-block {
+      text-align: center;
+      max-width: 680px;
+    }
+
+    .headline {
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 18px;
+      background: linear-gradient(135deg, #ffffff 0%, #c4bfff 60%, #6c63ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subheadline {
+      font-size: clamp(1rem, 2.2vw, 1.2rem);
+      color: var(--muted);
+      font-weight: 400;
+      line-height: 1.6;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* Countdown */
+    .countdown-container {
+      width: 100%;
+      max-width: 780px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 48px 32px;
+      box-shadow:
+        0 0 0 1px rgba(108,99,255,0.08),
+        0 40px 80px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .countdown-container::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    .countdown-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .unit-display {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 0.75;
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .unit-display::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0;
+      top: 50%;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .unit-number {
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+      position: relative;
+      z-index: 1;
+      background: linear-gradient(180deg, #ffffff 0%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .unit-number.flip {
+      animation: flipNum 0.35s ease-out;
+    }
+
+    @keyframes flipNum {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      40% { transform: translateY(-12px) scale(0.92); opacity: 0.3; }
+      100% { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    .unit-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .separators {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      margin-top: 8px;
+    }
+
+    /* Glow accent bars */
+    .glow-bar {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 50% 30% at 50% 100%, var(--glow), transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Target date line */
+    .target-date {
+      text-align: center;
+      margin-top: 28px;
+      font-size: 13px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .target-date strong {
+      color: var(--accent2);
+      font-weight: 600;
+    }
+
+    .target-date svg {
+      opacity: 0.5;
+    }
+
+    /* CTA */
+    .cta-block {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .cta-text {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .notify-form {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .notify-input {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-size: 14px;
+      color: var(--text);
+      font-family: inherit;
+      width: 260px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .notify-input:focus {
+      border-color: rgba(108,99,255,0.5);
+    }
+
+    .notify-input::placeholder { color: var(--muted); }
+
+    .notify-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 22px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+      box-shadow: 0 4px 20px rgba(108,99,255,0.4);
+    }
+
+    .notify-btn:hover {
+      background: #7c73ff;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 24px rgba(108,99,255,0.5);
+    }
+
+    .notify-btn:active { transform: translateY(0); }
+
+    .success-msg {
+      display: none;
+      color: var(--accent2);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    /* Footer */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      color: rgba(136,132,160,0.5);
+    }
+
+    /* Responsive */
+    @media (max-width: 520px) {
+      .countdown-container { padding: 32px 20px; }
+      .countdown-grid { gap: 10px; }
+      .notify-input { width: 100%; }
+      .notify-form { flex-direction: column; align-items: stretch; width: 100%; max-width: 320px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+
+  <div class="wrapper">
+    <!-- Badge -->
+    <div class="badge">
+      <span class="badge-dot"></span>
+      Coming Soon
+    </div>
+
+    <!-- Headline -->
+    <div class="headline-block">
+      <h1 class="headline">Pete's MVP<br>is launching.</h1>
+      <p class="subheadline">
+        Something big is almost here. Get ready - the countdown to launch day has begun.
+      </p>
+    </div>
+
+    <!-- Countdown -->
+    <div class="countdown-container">
+      <div class="glow-bar"></div>
+
+      <div class="countdown-grid">
+        <div class="unit">
+          <div class="unit-display">
+            <span class="unit-number" id="days">00</span>
+          </div>
+          <span class="unit-label">Days</span>
+        </div>
+
+        <div class="unit">
+          <div class="unit-display">
+            <span class="unit-number" id="hours">00</span>
+          </div>
+          <span class="unit-label">Hours</span>
+        </div>
+
+        <div class="unit">
+          <div class="unit-display">
+            <span class="unit-number" id="minutes">00</span>
+          </div>
+          <span class="unit-label">Minutes</span>
+        </div>
+      </div>
+
+      <div class="target-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        Launching <strong>July 1, 2026</strong> &nbsp;&middot;&nbsp; Frankfurt, Germany (CET)
+      </div>
+    </div>
+
+    <!-- Notify CTA -->
+    <div class="cta-block">
+      <p class="cta-text">Want a heads-up when we go live?</p>
+      <form class="notify-form" onsubmit="handleSubmit(event)">
+        <input class="notify-input" type="email" placeholder="your@email.com" required />
+        <button class="notify-btn" type="submit">Notify Me</button>
+      </form>
+      <p class="success-msg" id="success">You're on the list. See you July 1st.</p>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2026 &middot; Pete's Launch
+  </footer>
+
+  <script>
+    // Target: July 1, 2026 at 00:00:00 Frankfurt time (Europe/Berlin = CET/CEST)
+    // In summer (July), Frankfurt is UTC+2 (CEST)
+    // So July 1 00:00:00 Frankfurt = June 30 22:00:00 UTC
+    const TARGET_UTC = Date.UTC(2026, 5, 30, 22, 0, 0); // months are 0-indexed: June=5
+
+    const daysEl    = document.getElementById('days');
+    const hoursEl   = document.getElementById('hours');
+    const minutesEl = document.getElementById('minutes');
+
+    function pad(n) { return String(Math.max(0, Math.floor(n))).padStart(2, '0'); }
+
+    function flipIfChanged(el, newVal) {
+      if (el.textContent !== newVal) {
+        el.classList.remove('flip');
+        void el.offsetWidth; // reflow
+        el.classList.add('flip');
+        el.textContent = newVal;
+      }
+    }
+
+    function updateCountdown() {
+      const now = Date.now();
+      const diff = TARGET_UTC - now;
+
+      if (diff <= 0) {
+        daysEl.textContent = '00';
+        hoursEl.textContent = '00';
+        minutesEl.textContent = '00';
+        document.querySelector('.subheadline').textContent = "We're live. Welcome.";
+        return;
+      }
+
+      const totalSeconds = diff / 1000;
+      const d = Math.floor(totalSeconds / 86400);
+      const h = Math.floor((totalSeconds % 86400) / 3600);
+      const m = Math.floor((totalSeconds % 3600) / 60);
+
+      flipIfChanged(daysEl,    pad(d));
+      flipIfChanged(hoursEl,   pad(h));
+      flipIfChanged(minutesEl, pad(m));
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      document.querySelector('.notify-form').style.display = 'none';
+      document.querySelector('.cta-text').style.display = 'none';
+      document.getElementById('success').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
