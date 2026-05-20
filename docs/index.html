@@ -388,7 +388,7 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
         </svg>
-        Launching <strong>July 1, 2026</strong> &nbsp;&middot;&nbsp; Frankfurt, Germany (CET)
+        Launching <strong>June 1, 2026</strong> &nbsp;&middot;&nbsp; Frankfurt, Germany (CET)
       </div>
     </div>
 
@@ -411,7 +411,7 @@
     // Target: July 1, 2026 at 00:00:00 Frankfurt time (Europe/Berlin = CET/CEST)
     // In summer (July), Frankfurt is UTC+2 (CEST)
     // So July 1 00:00:00 Frankfurt = June 30 22:00:00 UTC
-    const TARGET_UTC = Date.UTC(2026, 5, 30, 22, 0, 0); // months are 0-indexed: June=5
+    const TARGET_UTC = Date.UTC(2026, 4, 31, 22, 0, 0); // months are 0-indexed: June=5
 
     const daysEl    = document.getElementById('days');
     const hoursEl   = document.getElementById('hours');
